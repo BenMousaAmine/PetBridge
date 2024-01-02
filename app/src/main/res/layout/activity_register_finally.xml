@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/GreenLG"
+        tools:context=".auth.RegisterFinallyActivity">
+
+
+        <ImageView
+            android:id="@+id/backRegisterAc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/quantum_ic_arrow_back_grey600_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.01"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/logoAppMainActivity" />
+
+        <ImageView
+            android:id="@+id/logoAppMainActivity"
+            android:layout_width="417dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/inEmailRegisterAc"
+            android:layout_width="361dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Insert your email address"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.32"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailRegisterAc" />
+
+        <TextView
+            android:id="@+id/emailRegisterAc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Email :"
+            android:textColor="@color/white"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logoAppMainActivity" />
+
+        <Button
+            android:id="@+id/btnRegisterAc"
+            android:layout_width="300dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/white"
+            android:text="Register"
+            android:textAlignment="center"
+            android:textColor="@color/GreenLG"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:cornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.558"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="103dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.535"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inRpPasswordRegisterAc">
+
+            <RadioButton
+                android:id="@+id/SecondPageRegisterAc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                tools:layout_editor_absoluteX="216dp"
+                tools:layout_editor_absoluteY="548dp" />
+
+            <RadioButton
+                android:id="@+id/firstPageRegisterAc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:clickable="false"
+                tools:layout_editor_absoluteX="168dp"
+                tools:layout_editor_absoluteY="548dp" />
+        </RadioGroup>
+
+
+        <TextView
+            android:id="@+id/rpPasswordRegisterAc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Repeat your password :"
+            android:textColor="@color/white"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.17"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/comentPassword" />
+
+        <ImageView
+            android:id="@+id/rpPasswordToggleRegisterAc"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_alignEnd="@id/inRpPasswordRegisterAc"
+            android:layout_alignBottom="@id/inRpPasswordRegisterAc"
+            android:layout_marginStart="344dp"
+            android:padding="8dp"
+            android:src="@drawable/showpass"
+            app:layout_constraintBottom_toBottomOf="@+id/inRpPasswordRegisterAc"
+            app:layout_constraintStart_toStartOf="@+id/inRpPasswordRegisterAc" />
+
+        <EditText
+            android:id="@+id/inRpPasswordRegisterAc"
+            android:layout_width="361dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="4dp"
+            android:ems="10"
+            android:hint="Repeat your password"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rpPasswordRegisterAc" />
+
+        <ImageView
+            android:id="@+id/passwordToggleRegisterAc"
+            android:layout_width="63dp"
+            android:layout_height="51dp"
+            android:layout_alignEnd="@id/inPasswordRegisterAc"
+            android:layout_alignBottom="@id/inPasswordRegisterAc"
+            android:layout_marginStart="344dp"
+            android:padding="8dp"
+            android:src="@drawable/showpass"
+            app:layout_constraintStart_toStartOf="@+id/inPasswordRegisterAc"
+            app:layout_constraintTop_toBottomOf="@+id/passwordRegisterAc" />
+
+        <EditText
+            android:id="@+id/inPasswordRegisterAc"
+            android:layout_width="361dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Insert your password "
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.32"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordRegisterAc" />
+
+        <TextView
+            android:id="@+id/passwordRegisterAc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Password :"
+            android:textColor="@color/white"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.061"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inEmailRegisterAc" />
+
+        <TextView
+            android:id="@+id/comentPassword"
+            android:layout_width="368dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="8dp"
+            android:text="The password must have at least 8 characters, contain at least one lowercase letter, one uppercase letter, one number, and one special character."
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.418"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inPasswordRegisterAc" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

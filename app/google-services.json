@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "97025559641",
+    "project_id": "petbridge-59540",
+    "storage_bucket": "petbridge-59540.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97025559641:android:657e87417128a2b2e03548",
+        "android_client_info": {
+          "package_name": "com.example.petbridge"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWlfJohmlBXHcoQsHnGtos0xrNJImAJvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

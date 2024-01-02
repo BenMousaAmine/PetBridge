@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/GreenLG"
+    tools:context=".navigation.ProfileFragment"
+    android:layout_gravity="top">
+
+    <ImageView
+        android:id="@+id/profileImageProfileAc"
+        android:layout_width="130dp"
+        android:layout_height="134dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/profiledefault"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.142"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/changeImageProfileAc"
+        android:layout_width="17dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/foto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.37"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileImageProfileAc" />
+
+    <TextView
+        android:id="@+id/nameProfileAc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="ProfileName"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.107"
+        app:layout_constraintStart_toEndOf="@+id/profileImageProfileAc"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/changeEmailProfileAc"
+        android:layout_width="331dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="46dp"
+        android:text="Change Email"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/changeImageProfileAc" />
+
+    <TextView
+        android:id="@+id/changePassProfileAc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/changeEmailProfileAc"
+        android:layout_marginTop="32dp"
+        android:text="Change Password"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.238"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changeEmailProfileAc" />
+
+    <TextView
+        android:id="@+id/privacyProfileAc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/changePassProfileAc"
+        android:layout_marginTop="32dp"
+        android:text="Privacy"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.127"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changePassProfileAc" />
+
+    <Button
+        android:id="@+id/logoutProfileAc"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/privacyProfileAc"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp"
+        android:backgroundTint="@color/white"
+        android:text="Login"
+        android:textAlignment="center"
+        android:textColor="@color/GreenLG"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/privacyProfileAc" />
+
+    <TextView
+        android:id="@+id/deleteAccountAc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logoutProfileAc"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="Delete Account"
+        android:textColor="#FF0505"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoutProfileAc" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
