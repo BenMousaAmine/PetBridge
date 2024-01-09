@@ -90,15 +90,11 @@ public class ProfileFragment extends Fragment {
         registerImage();
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseManager.getFirestoreInstance();
-     //   db = FirebaseFirestore.getInstance();
-     //   storage = FirebaseStorage.getInstance();
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         profileImage = view.findViewById(R.id.profileImageProfileAc);
         TextView nome = view.findViewById(R.id.nameProfileAc);
@@ -113,7 +109,6 @@ public class ProfileFragment extends Fragment {
 
         String userId = mAuth.getCurrentUser().getUid();
 
-        // Carica i dettagli dell'utente
         loadUserProfileDetails(userId, profileImage, nome);
 
         logoutButton.setOnClickListener(v -> {
@@ -258,7 +253,7 @@ public class ProfileFragment extends Fragment {
     private void openGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryIntent.setType("image/*");
-        galleryIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // Aggiunto il flag qui
+        galleryIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         pickImageLauncher.launch(galleryIntent);
     }
 
@@ -278,7 +273,6 @@ public class ProfileFragment extends Fragment {
                             Glide.with(requireContext())
                                     .load(Uri.parse(image))
                                     .into(profileImage);
-                           // profileImage.setImageURI(Uri.parse(image));
 
                         }
                     } else {

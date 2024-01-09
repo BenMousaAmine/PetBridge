@@ -22,7 +22,7 @@ public class RunActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
         Places.initialize(getApplicationContext(), getString(R.string.places_api_key));
-        //auth con firebase
+
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
             Intent intent = new Intent(RunActivity.this, MainActivity.class);
@@ -30,16 +30,6 @@ public class RunActivity extends AppCompatActivity {
             finish();
             return;
         }
-/*
-
-//Provisorio Solo per non Usare firebase
-        if (auth){
-            Intent intent = new Intent(RunActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        }
-*/
         login = findViewById(R.id.loginMain);
         register = findViewById(R.id.registerMain);
         login.setOnClickListener(v ->{

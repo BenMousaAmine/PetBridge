@@ -65,8 +65,6 @@ public class MessageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View  view = inflater.inflate(R.layout.fragment_message, container, false);
-     //   db = FirebaseFirestore.getInstance();
-     //   db1 = FirebaseFirestore.getInstance();
         db = FirebaseManager.getFirestoreInstance();
         recyclerView = view.findViewById(R.id.mainUserRecyclerView);
         fetchData();
@@ -128,7 +126,6 @@ public class MessageFragment extends Fragment {
         return taskCompletionSource.getTask();
     }
 
-    // Assuming messageList and userIdList are class-level variables
     private List<Message> messageList = new ArrayList<>();
     private List<String> userIdList = new ArrayList<>();
 

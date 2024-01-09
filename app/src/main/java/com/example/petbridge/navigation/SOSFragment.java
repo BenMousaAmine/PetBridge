@@ -159,9 +159,9 @@ public class SOSFragment extends Fragment {
         localizeMe.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    if (isGPSEnabled()) {
-                        localizeMe.setImageResource(R.drawable.location_on);
+                    if (GPSActivated()) {
                         getCurrentLocation();
+                        localizeMe.setImageResource(R.drawable.location_on);
 
                     } else {
                         turnOnGPS();
@@ -201,9 +201,7 @@ public class SOSFragment extends Fragment {
                                 mMap.addMarker(new MarkerOptions().position(latLng).title(name)
                                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                             }
-
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
-
 
                         } catch (JSONException e) {
                             Log.e(TAG, "map json : " + e.getMessage());
@@ -229,7 +227,7 @@ public class SOSFragment extends Fragment {
 
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (isGPSEnabled()) {
+                if (GPSActivated()) {
                     getCurrentLocation();
                 } else {
                     turnOnGPS();
@@ -241,16 +239,14 @@ public class SOSFragment extends Fragment {
     private void getCurrentLocation() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                if (isGPSEnabled()) {
+                if (GPSActivated()) {
                     LocationServices.getFusedLocationProviderClient(requireContext())
                             .requestLocationUpdates(locationRequest, new LocationCallback() {
                                 @Override
                                 public void onLocationResult(@NonNull LocationResult locationResult) {
                                     super.onLocationResult(locationResult);
-
                                     LocationServices.getFusedLocationProviderClient(requireContext())
                                             .removeLocationUpdates(this);
-
                                     if (locationResult != null && locationResult.getLocations().size() > 0) {
                                         Location location = locationResult.getLocations().get(locationResult.getLocations().size() - 1);
                                         double latitude = location.getLatitude();
@@ -302,7 +298,7 @@ public class SOSFragment extends Fragment {
         });
     }
 
-    private boolean isGPSEnabled() {
+    private boolean GPSActivated() {
         LocationManager locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
         return locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
