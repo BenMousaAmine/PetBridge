@@ -117,14 +117,10 @@ public class AddPublicationFragment extends Fragment {
         post =view.findViewById(R.id.post);
         pubText = view.findViewById(R.id.publicationText);
 
-
         Uri defaultImageUri = Uri.parse("android.resource://com.example.petbridge/drawable/help");
         selectedImageUri = (selectedImageUri != null) ? selectedImageUri : defaultImageUri;
 
-
         addImage.setOnClickListener(v -> choseOption());
-
-
 
 
         post.setOnClickListener(v -> {
@@ -179,17 +175,13 @@ public class AddPublicationFragment extends Fragment {
         });
         builder.show();
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 100 && resultCode == Activity.RESULT_OK){
-
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             selectedImageUri = bitmapToUri(bitmap);
             imagepub.setImageURI(selectedImageUri);
-
-
 
         }
     }

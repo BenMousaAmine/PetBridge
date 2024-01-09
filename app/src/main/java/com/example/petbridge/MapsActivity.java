@@ -27,11 +27,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
     private GoogleMap mMap;
-
     private ActivityMapsBinding binding;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +38,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(binding.getRoot());
 
     }
-
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-
-
     }
 
 }

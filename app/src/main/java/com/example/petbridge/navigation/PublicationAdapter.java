@@ -180,20 +180,14 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
         private void addMessageToCollection(CollectionReference messagesCollection, Message newMessage) {
             messagesCollection.add(newMessage)
                     .addOnSuccessListener(documentReference -> {
-                        // Il messaggio è stato aggiunto con successo alla raccolta "messages"
-                        // Puoi anche gestire altri aggiornamenti o azioni qui se necessario
                     })
                     .addOnFailureListener(e -> {
-                        // Gestire eventuali errori durante l'aggiunta del messaggio
                     });
         }
 
         private String generateConversationId(String uid1, String uid2) {
-            // Ordina gli UID in modo da ottenere una sequenza univoca per la conversazione
             List<String> sortedUids = new ArrayList<>(Arrays.asList(uid1, uid2));
             Collections.sort(sortedUids);
-
-            // Unisce gli UID per formare l'ID della conversazione
             return sortedUids.get(0) + "_" + sortedUids.get(1);
         }
     }

@@ -29,10 +29,6 @@ public class HomeFragment extends Fragment {
     private ImageView addPub;
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
-    private FirebaseFirestore db1;
-
-
-
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -61,20 +57,14 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-      //  db = FirebaseFirestore.getInstance();
-     //   db1 = FirebaseFirestore.getInstance();
         db = FirebaseManager.getFirestoreInstance();
         recyclerView = view.findViewById(R.id.recyclerViewHome);
-
-
 
         addPub = view.findViewById(R.id.addpub);
 
@@ -93,12 +83,9 @@ public class HomeFragment extends Fragment {
         db.collection("publications")
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {
                     if (e != null) {
-                        // Gestisci l'errore qui
                         return;
                     }
-
                     List<Publication> publicationList = new ArrayList<>();
-
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         Publication publication = document.toObject(Publication.class);
                         String userId = publication.getUserId();
@@ -109,7 +96,6 @@ public class HomeFragment extends Fragment {
                                     if (e1 != null) {
                                         return;
                                     }
-
                                     if (documentSnapshot.exists()) {
                                         String nome = documentSnapshot.getString("Name");
                                         String cognome = documentSnapshot.getString("LastName");

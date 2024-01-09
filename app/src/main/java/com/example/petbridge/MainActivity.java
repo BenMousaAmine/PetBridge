@@ -26,9 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         navbtn = findViewById(R.id.tabMain);
-
         navbtn.setOnItemSelectedListener(item -> {
             String selected = Objects.requireNonNull(item.getTitle().toString());
             ApplicaFragement(selected);
@@ -63,6 +61,4 @@ public class MainActivity extends AppCompatActivity {
             break ;
         }
     }
-
-
 }

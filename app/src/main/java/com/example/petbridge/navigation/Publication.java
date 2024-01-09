@@ -8,16 +8,13 @@ public class Publication {
     private String nome;
     private String profileImage;
 
-
     public Publication() {
     }
-
     public Publication(String userId, String pubImage, String pubText) {
         this.userId = userId;
         this.pubImage = pubImage;
         this.pubText = pubText;
     }
-
 
     public String getNome() {
         return nome;
@@ -34,15 +31,6 @@ public class Publication {
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
-
-
-
-
-
-
-
-
-
     public String getPubImage() {
         return pubImage;
     }
@@ -50,9 +38,6 @@ public class Publication {
     public void setPubImage(String pubImage) {
         this.pubImage = pubImage;
     }
-
-
-
     public String getPubText() {
         return pubText;
     }
