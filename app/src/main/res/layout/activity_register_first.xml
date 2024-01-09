@@ -9,7 +9,8 @@
         android:background="@color/GreenLG"
         tools:context=".auth.RegisterFirstActivity"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-40dp">
+        tools:layout_editor_absoluteY="-40dp"
+        >
 
         <ImageView
             android:id="@+id/logoAppMainActivity"

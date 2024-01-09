@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="GreenLG">#0A3042</color>
     <color name="purple">#9C27B0</color>
+    <color name="sender">#1E88E5</color>
+    <color name="reciver">#7CB342</color>
 </resources>

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/GreenLG"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+   >
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
@@ -14,7 +15,8 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/tabMain"
         android:layout_marginBottom="3dp"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home"
+        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/tabMain"

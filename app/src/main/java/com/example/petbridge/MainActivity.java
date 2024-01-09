@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.util.Log;
 
 
 import com.example.petbridge.navigation.HomeFragment;
@@ -12,6 +13,10 @@ import com.example.petbridge.navigation.SOSFragment;
 import com.example.petbridge.navigation.MessageFragment;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Objects;
 
@@ -29,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
             ApplicaFragement(selected);
             return true ;
         });
+
 
     }
     protected  void ApplicaFragement ( String name ) {

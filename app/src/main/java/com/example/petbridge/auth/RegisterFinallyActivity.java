@@ -15,9 +15,11 @@ import android.widget.Toast;
 
 import com.example.petbridge.R;
 import com.example.petbridge.databinding.ActivityRegisterFinallyBinding;
+import com.example.petbridge.firebase.FirebaseManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,8 +47,8 @@ public class RegisterFinallyActivity extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-
+       // db = FirebaseFirestore.getInstance();
+        db = FirebaseManager.getFirestoreInstance();
 
         binding.passwordToggleRegisterAc.setOnClickListener(v -> {
           PasswordToggle(binding.passwordToggleRegisterAc ,binding.inPasswordRegisterAc , isPasswordVisible1);
@@ -77,6 +79,7 @@ public class RegisterFinallyActivity extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 sendEmailVerification(user);
                                 saveUserDataToFirestore(user, name, lastName, birthDate, email , "null");
+                                updateFCMToken();
                                 Log.d("RegisterFireBase", "andato a buon fine");
 
                                 new AlertDialog.Builder(this)
@@ -105,6 +108,35 @@ public class RegisterFinallyActivity extends AppCompatActivity {
 
 
 
+    }
+    private void updateFCMToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String token = task.getResult();
+                        Log.d("FCM Token", token);
+
+                        // Salva il token nel tuo database (nell'oggetto utente o in un'altra posizione appropriata)
+                        saveFCMTokenToFirestore(token);
+                    }
+                });
+    }
+
+    private void saveFCMTokenToFirestore(String token) {
+        // Ottieni l'ID dell'utente corrente (puoi ottenerlo da mAuth)
+        String userId = mAuth.getCurrentUser().getUid();
+
+        // Salva il token FCM nel documento dell'utente nel tuo database
+        // Sostituisci "users" con la tua raccolta utenti nel Firestore
+        FirebaseFirestore.getInstance().collection("users")
+                .document(userId)
+                .update("fcmToken", token)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Save FCM Token", "Success");
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("Save FCM Token", "Failed");
+                });
     }
     public void PasswordToggle(ImageView toggleButton, EditText passwordField , Boolean isPasswordVisible) {
         isPasswordVisible = !isPasswordVisible;

@@ -130,14 +130,15 @@ public class SOSFragment extends Fragment {
                         throw new RuntimeException(e);
                     }
                     if (addressList != null && !addressList.isEmpty()) {
-                        String  address = addressList.get(0).toString();
-                     //   LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                        searchAnimalServices(address);
-                     //  mMap.addMarker(new MarkerOptions().position(latLng).title(location));
-                     //   mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                        Address address = addressList.get(0);
+                        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                        searchAnimalServices(latLng);
+                        // mMap.addMarker(new MarkerOptions().position(latLng).title(location));
+                        // mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                     } else {
                         Toast.makeText(requireContext(), "City not found", Toast.LENGTH_LONG).show();
                     }
+
                 }
 
                 return false;
@@ -173,12 +174,12 @@ public class SOSFragment extends Fragment {
 
         return view;
     }
-    private void searchAnimalServices(String location) {
-        String apiKey = "AIzaSyB3Acl71BhWa4HzJABW40vtXRUHQZHf-sk";
+    private void searchAnimalServices(LatLng location) {
+        String apiKey = "AIzaSyAbv05CQgCwdKA1iinCyjCVCYE4ZlXTqXc";
         String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?" +
                 "query=veterinary+clinic+OR+pet+store" +
-                "&location=" + mMap.getCameraPosition().target.latitude + "," + mMap.getCameraPosition().target.longitude +
-                "&radius=5000" +
+                "&location=" + location.latitude + "," + location.longitude +
+                "&radius=20000" +
                 "&key=" + apiKey;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -188,33 +189,38 @@ public class SOSFragment extends Fragment {
                         try {
                             mMap.clear();
                             JSONArray results = response.getJSONArray("results");
+                            Log.d(TAG, "numero servizi: " + results.length());
                             for (int i = 0; i < results.length(); i++) {
                                 JSONObject place = results.getJSONObject(i);
-                                JSONObject location = place.getJSONObject("geometry").getJSONObject("location");
-                                double lat = location.getDouble("lat");
-                                double lng = location.getDouble("lng");
+                                JSONObject placeLocation = place.getJSONObject("geometry").getJSONObject("location");
+                                double lat = placeLocation.getDouble("lat");
+                                double lng = placeLocation.getDouble("lng");
                                 String name = place.getString("name");
 
                                 LatLng latLng = new LatLng(lat, lng);
                                 mMap.addMarker(new MarkerOptions().position(latLng).title(name)
                                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                             }
+
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+
+
                         } catch (JSONException e) {
-                            Log.e(TAG, "Error parsing JSON response: " + e.getMessage());
+                            Log.e(TAG, "map json : " + e.getMessage());
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e(TAG, "Error making API request: " + error.getMessage());
+                        Log.e(TAG, "API MAP: " + error.getMessage());
                         Toast.makeText(requireContext(), "Error making API request", Toast.LENGTH_SHORT).show();
                     }
                 });
 
         requestQueue.add(request);
     }
+
 
 
     @Override
@@ -247,13 +253,10 @@ public class SOSFragment extends Fragment {
 
                                     if (locationResult != null && locationResult.getLocations().size() > 0) {
                                         Location location = locationResult.getLocations().get(locationResult.getLocations().size() - 1);
-                                        String CityName = location.toString();
                                         double latitude = location.getLatitude();
                                         double longitude = location.getLongitude();
                                         LatLng city = new LatLng(latitude, longitude);
-                                        searchAnimalServices(CityName);
-                                    //    mMap.addMarker(new MarkerOptions().position(city).title("Marker in Sydney"));
-                                     //   mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(city, 10));
+                                        searchAnimalServices(city);
                                     }
                                 }
                             }, Looper.getMainLooper());
@@ -265,6 +268,7 @@ public class SOSFragment extends Fragment {
             }
         }
     }
+
 
     private void turnOnGPS() {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
@@ -291,7 +295,6 @@ public class SOSFragment extends Fragment {
                             }
                             break;
                         case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                            // Device does not have location
                             break;
                     }
                 }

@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.petbridge.firebase.FirebaseManager;
 import com.example.petbridge.navigation.HomeFragment;
 import com.example.petbridge.navigation.Publication;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,8 +59,8 @@ public class AddPublicationFragment extends Fragment {
     private EditText pubText ;
     private Button post ;
     private FirebaseFirestore db ;
-   private  Uri selectedImageUri ;
-private FirebaseAuth auth ;
+    private  Uri selectedImageUri ;
+   private FirebaseAuth auth ;
     public AddPublicationFragment() {
         // Required empty public constructor
 
@@ -100,6 +101,7 @@ private FirebaseAuth auth ;
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        db = FirebaseManager.getFirestoreInstance();
         auth = FirebaseAuth.getInstance();
         registerImage();
 
@@ -127,7 +129,6 @@ private FirebaseAuth auth ;
 
         post.setOnClickListener(v -> {
             if (controlText(pubText.getText().toString())){
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 CollectionReference publicationsRef = db.collection("publications");
                 String userId = auth.getCurrentUser().getUid() ;
                 DocumentReference newPublicationRef = publicationsRef.document();

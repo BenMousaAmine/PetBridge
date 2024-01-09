@@ -4,19 +4,18 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.petbridge.firebase.FirebaseManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.petbridge.AddPublicationFragment;
 import com.example.petbridge.R;
@@ -31,6 +30,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private FirebaseFirestore db1;
+
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -69,13 +69,12 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        db = FirebaseFirestore.getInstance();
-        db1 = FirebaseFirestore.getInstance();
+      //  db = FirebaseFirestore.getInstance();
+     //   db1 = FirebaseFirestore.getInstance();
+        db = FirebaseManager.getFirestoreInstance();
         recyclerView = view.findViewById(R.id.recyclerViewHome);
-/*
 
-        PublicationAdapter publicationAdapter = new PublicationAdapter(publication);
-        recyclerView.setAdapter(publicationAdapter);*/
+
 
         addPub = view.findViewById(R.id.addpub);
 
@@ -92,42 +91,44 @@ public class HomeFragment extends Fragment {
 
     public void fetchData() {
         db.collection("publications")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        List<Publication> publicationList = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Publication publication = document.toObject(Publication.class);
-                            String userId = publication.getUserId();
-                            db1.collection("Users")
-                                    .document(userId)
-                                    .get()
-                                    .addOnCompleteListener(task1 -> {
-                                        if (task1.isSuccessful()) {
-                                            DocumentSnapshot documentUser = task1.getResult();
-                                            if (documentUser.exists()) {
-                                                String nome = documentUser.getString("Name");
-                                                String cognome = documentUser.getString("LastName");
-                                                String profileImage = documentUser.getString("Image");
-                                                publication.setNome(nome + " " + cognome);
-                                                publication.setProfileImage(profileImage);
-                                            }
-                                            publicationList.add(publication);
-                                        }
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if (e != null) {
+                        // Gestisci l'errore qui
+                        return;
+                    }
 
-                                        // Update the RecyclerView with the fetched data
-                                        updateView(publicationList);
+                    List<Publication> publicationList = new ArrayList<>();
 
-                                    });
-                        }
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Publication publication = document.toObject(Publication.class);
+                        String userId = publication.getUserId();
+
+                        db.collection("Users")
+                                .document(userId)
+                                .addSnapshotListener((documentSnapshot, e1) -> {
+                                    if (e1 != null) {
+                                        return;
+                                    }
+
+                                    if (documentSnapshot.exists()) {
+                                        String nome = documentSnapshot.getString("Name");
+                                        String cognome = documentSnapshot.getString("LastName");
+                                        String profileImage = documentSnapshot.getString("Image");
+                                        publication.setNome(nome + " " + cognome);
+                                        publication.setProfileImage(profileImage);
+                                    }
+                                    publicationList.add(publication);
+                                    updateView(publicationList, publication.getUserId());
+                                });
                     }
                 });
     }
-    
 
-    private void updateView(List<Publication> publicationList) {
-        // Update your RecyclerView adapter with the fetched data
-        PublicationAdapter publicationAdapter = new PublicationAdapter(publicationList.toArray(new Publication[0]));
+
+
+    private void updateView(List<Publication> publicationList , String reciverId) {
+        String senderId = FirebaseAuth.getInstance().getUid();
+        PublicationAdapter publicationAdapter = new PublicationAdapter(publicationList.toArray(new Publication[0]), senderId, reciverId);
         recyclerView.setAdapter(publicationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

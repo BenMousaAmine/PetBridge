@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.petbridge.R;
 import com.example.petbridge.auth.LoginActivity;
+import com.example.petbridge.firebase.FirebaseManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -56,7 +57,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseFirestore db;
     private ImageView profileImage ;
 
-    private FirebaseStorage storage;
+ //   private FirebaseStorage storage;
 
 
     private  ActivityResultLauncher<Intent> pickImageLauncher;
@@ -87,10 +88,10 @@ public class ProfileFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         registerImage();
-        // Inizializza Firebase
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
+        db = FirebaseManager.getFirestoreInstance();
+     //   db = FirebaseFirestore.getInstance();
+     //   storage = FirebaseStorage.getInstance();
 
     }
 

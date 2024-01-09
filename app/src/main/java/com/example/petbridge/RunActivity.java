@@ -25,7 +25,6 @@ public class RunActivity extends AppCompatActivity {
         //auth con firebase
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
-
             Intent intent = new Intent(RunActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
