@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navbtn = findViewById(R.id.tabMain);
+
+
+
         navbtn.setOnItemSelectedListener(item -> {
             String selected = Objects.requireNonNull(item.getTitle().toString());
             ApplicaFragement(selected);

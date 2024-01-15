@@ -1,5 +1,6 @@
 package com.example.petbridge.navigation;
 import static com.example.petbridge.messaging.FCMNotification.sendNotification;
+import com.squareup.picasso.Picasso;
 
 import static java.security.AccessController.getContext;
 
@@ -18,11 +19,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 import com.example.petbridge.R;
 import com.example.petbridge.firebase.FirebaseManager;
 import com.example.petbridge.messaging.Conversation;
@@ -30,8 +28,6 @@ import com.example.petbridge.messaging.Message;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -80,7 +76,7 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
         private final TextView publicationText;
         private final ImageView icon;
         private final ImageView imagepub;
-        private Button contact;
+        private final Button contact;
         private final String senderId;
         private final String reciverId;
 
@@ -100,12 +96,14 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
         public void bind(Publication publication) {
             name.setText(publication.getNome());
             publicationText.setText(publication.getPubText());
-            Glide.with(itemView.getContext())
-                    .load(Uri.parse(publication.getProfileImage()))
-                    .into(icon);
-            Glide.with(itemView.getContext())
-                    .load(Uri.parse(publication.getPubImage()))
-                    .into(imagepub);
+            if (publication.getProfileImage() != null) {
+                Picasso.get().load(publication.getProfileImage()).into(icon);
+            }
+
+            if (publication.getPubImage() != null) {
+                Picasso.get().load(publication.getPubImage()).into(imagepub);
+            }
+
             contact.setOnClickListener(view -> {
                 writeMessage(view.getContext(), getAdapterPosition() , publication.getUserId());
             });

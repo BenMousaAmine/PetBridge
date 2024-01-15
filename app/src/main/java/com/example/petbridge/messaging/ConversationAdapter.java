@@ -13,8 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.MessageViewHolder> {
-    private List<Message> messageList;
-    private String currentUserId;
+    private final List<Message> messageList;
+    private final String currentUserId;
 
 
 

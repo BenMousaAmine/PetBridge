@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -39,6 +40,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
@@ -51,34 +53,40 @@ import java.util.Locale;
 public class AddPublicationFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final int CAMERA_PERM_CODE = 101;
+    public static final int CAMERA_REQUEST_CODE = 102;
+    public static final int GALLERY_REQUEST_CODE = 105;
     private String mParam1;
     private String mParam2;
-    private  ActivityResultLauncher<Intent> pickImageLauncher;
-    private ImageView addImage ;
-    private ImageView imagepub ;
-    private EditText pubText ;
-    private Button post ;
-    private FirebaseFirestore db ;
-    private  Uri selectedImageUri ;
-   private FirebaseAuth auth ;
+    private ActivityResultLauncher<Intent> pickImageLauncher;
+    private ImageView addImage;
+    private ImageView imagepub;
+    private EditText pubText;
+    private Button post;
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
+    private Uri selectedImageUri;
+
     public AddPublicationFragment() {
         // Required empty public constructor
 
     }
-   public void registerImage(){
+
+    public void registerImage() {
         pickImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         if (data != null) {
-                             selectedImageUri = data.getData();
-                                imagepub.setImageURI(selectedImageUri);
+                            selectedImageUri = data.getData();
+                            imagepub.setImageURI(selectedImageUri);
                         }
                     }
                 }
         );
     }
+
     private void openGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryIntent.setType("image/*");
@@ -111,10 +119,9 @@ public class AddPublicationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_publication, container, false);
-        // Inflate the layout for this fragment
-        addImage =view.findViewById(R.id.addImage);
-        imagepub =view.findViewById(R.id.imagepub);
-        post =view.findViewById(R.id.post);
+        addImage = view.findViewById(R.id.addImage);
+        imagepub = view.findViewById(R.id.imagepub);
+        post = view.findViewById(R.id.post);
         pubText = view.findViewById(R.id.publicationText);
 
         Uri defaultImageUri = Uri.parse("android.resource://com.example.petbridge/drawable/help");
@@ -122,42 +129,58 @@ public class AddPublicationFragment extends Fragment {
 
         addImage.setOnClickListener(v -> choseOption());
 
-
         post.setOnClickListener(v -> {
-            if (controlText(pubText.getText().toString())){
-                CollectionReference publicationsRef = db.collection("publications");
-                String userId = auth.getCurrentUser().getUid() ;
-                DocumentReference newPublicationRef = publicationsRef.document();
+            if (controlText(pubText.getText().toString())) {
+                // 1. Carica l'immagine su Firebase Storage
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                StorageReference imageReference = storageReference.child("pictures/" + selectedImageUri);
 
-                Publication newPublication = new Publication(
-                        userId.toString(),
-                        selectedImageUri.toString() ,
-                        pubText.getText().toString()
-                );
+                imageReference.putFile(selectedImageUri)
+                        .addOnSuccessListener(taskSnapshot -> {
+                            // 2. Ottieni l'URL dell'immagine
+                            imageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                                String imageUrl = uri.toString();
 
-                newPublicationRef.set(newPublication)
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(getActivity(), "Posting Success", Toast.LENGTH_SHORT).show();
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.fragment_container, new HomeFragment())
-                                    .addToBackStack(null)
-                                    .commit();
+                                // 3. Salva il documento Firestore con l'URL dell'immagine
+                                CollectionReference publicationsRef = db.collection("publications");
+                                String userId = auth.getCurrentUser().getUid();
+                                DocumentReference newPublicationRef = publicationsRef.document();
+
+                                Publication newPublication = new Publication(
+                                        userId,
+                                        imageUrl,
+                                        pubText.getText().toString()
+                                );
+
+                                newPublicationRef.set(newPublication)
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(getActivity(), "Posting Success", Toast.LENGTH_SHORT).show();
+                                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                            fragmentManager.beginTransaction()
+                                                    .replace(R.id.fragment_container, new HomeFragment())
+                                                    .addToBackStack(null)
+                                                    .commit();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(getActivity(), "Posting Failed", Toast.LENGTH_SHORT).show();
+                                        });
+                            });
                         })
                         .addOnFailureListener(e -> {
-                            Toast.makeText(getActivity(), "Posting Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Image Upload Failed", Toast.LENGTH_SHORT).show();
                         });
-
-            }else {
-                Toast.makeText(getActivity(), "Text Lenght must >30", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "Text Length must >30", Toast.LENGTH_SHORT).show();
             }
-
         });
-        return view ;
+        return view;
     }
+
+
     private boolean controlText(String text) {
-        return text.length() > 30;
+        return text.length() > 3;
     }
+
     private void choseOption() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Choose an option");
@@ -166,7 +189,6 @@ public class AddPublicationFragment extends Fragment {
             switch (which) {
                 case 0:
                     checkCameraPermission();
-                   TakePicture();
                     break;
                 case 1:
                     openGallery();
@@ -175,16 +197,18 @@ public class AddPublicationFragment extends Fragment {
         });
         builder.show();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             selectedImageUri = bitmapToUri(bitmap);
             imagepub.setImageURI(selectedImageUri);
 
         }
     }
+
     public Uri bitmapToUri(Bitmap mBitmap) {
         Uri uri = null;
         try {
@@ -202,38 +226,28 @@ public class AddPublicationFragment extends Fragment {
     }
 
     private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
-        return imageFile;
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+        return image;
     }
 
     public void TakePicture() {
-        new CountDownTimer(3000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            Toast.makeText(requireContext(), "Wait Camera to Launch : " + millisUntilFinished / 1000, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFinish() {
-                //TakePicture();
-                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(requireActivity(), "Camera permission is required to take a picture", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent, 100);
-                }
-            }
-        }.start();
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, 100);
 
     }
     public void checkCameraPermission(){
         if(ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(requireActivity() , new String[]{
                     Manifest.permission.CAMERA},100);
+        }else {
+            TakePicture();
         }
 
     }

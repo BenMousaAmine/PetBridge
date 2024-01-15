@@ -85,8 +85,7 @@ public class LoginActivity extends AppCompatActivity {
 }
     private Boolean validateEmail() {
         String email = binding.inEmail.getText().toString().trim();
-        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) return false;
-        return true ;
+        return !email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
     private boolean validatePassword() {
         String password = binding.inPassword.getText().toString().trim();
@@ -103,10 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         if (!password.matches(".*\\d.*")) {
             return false;
         }
-        if (!password.matches(".*[@#$%^&+=].*")) {
-            return false;
-        }
-        return true;
+        return password.matches(".*[@#$%^&+=].*");
     }
 
 }

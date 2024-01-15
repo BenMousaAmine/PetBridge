@@ -126,8 +126,8 @@ public class MessageFragment extends Fragment {
         return taskCompletionSource.getTask();
     }
 
-    private List<Message> messageList = new ArrayList<>();
-    private List<String> userIdList = new ArrayList<>();
+    private final List<Message> messageList = new ArrayList<>();
+    private final List<String> userIdList = new ArrayList<>();
 
 
     public void updateView(List<Message> messageList, List<String> userIdList) {

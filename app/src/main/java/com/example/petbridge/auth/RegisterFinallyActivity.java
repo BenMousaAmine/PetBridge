@@ -47,7 +47,7 @@ public class RegisterFinallyActivity extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
-       // db = FirebaseFirestore.getInstance();
+
         db = FirebaseManager.getFirestoreInstance();
 
         binding.passwordToggleRegisterAc.setOnClickListener(v -> {
@@ -198,9 +198,8 @@ public class RegisterFinallyActivity extends AppCompatActivity {
 
         private Boolean validateEmail() {
         String email = binding.inEmailRegisterAc.getText().toString().trim();
-        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) return false;
-        return true ;
-    }
+            return !email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        }
     private boolean validatePassword() {
         String password = binding.inPasswordRegisterAc.getText().toString().trim();
         String rpPassword = binding.inRpPasswordRegisterAc.getText().toString().trim();
@@ -217,11 +216,7 @@ public class RegisterFinallyActivity extends AppCompatActivity {
         if (!password.matches(".*\\d.*")) {
             return false;
         }
-        if (!password.matches(".*[@#$%^&+=].*")) {
-            return false;
-        }
-
-        return true;
+        return password.matches(".*[@#$%^&+=].*");
     }
 
 

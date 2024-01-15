@@ -42,7 +42,7 @@ public class ConversationFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private TextView name ;
-   private  FirebaseFirestore db ;
+    private  FirebaseFirestore db ;
     private String senderId;
     private String receiverId;
     private String fullName ;

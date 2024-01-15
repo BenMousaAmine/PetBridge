@@ -15,7 +15,7 @@ public class RunActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     Button login ;
     Button register ;
-    private Boolean auth = true ;
+    private final Boolean auth = true ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
