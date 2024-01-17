@@ -107,10 +107,8 @@ public class SOSFragment extends Fragment implements
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Handling the search text submission
                 String location = searchView.getQuery().toString();
                 List<Address> addressList = null;
-
                 if (location != null) {
                     Geocoder geocoder = new Geocoder(requireContext());
                     try {
@@ -152,11 +150,10 @@ public class SOSFragment extends Fragment implements
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(milano, 10));
 
 
-        // Checking location Permission
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
             if (GPSActivated()) {
                 getCurrentLocation();
-                // Start location updates and enable my location on the map
                 startLocationUpdate();
             }
             //show user postion with blue icon
@@ -181,17 +178,15 @@ public class SOSFragment extends Fragment implements
 
     private void searchAnimalServices(LatLng location) {
         // Performing a Google Places API search for veterinary clinics or pet stores
-        String apiKey = "AIzaSyAbv05CQgCwdKA1iinCyjCVCYE4ZlXTqXc";
+        String apiKey = "";
         String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?" +
                 "query=veterinary+clinic+OR+pet+store" +
                 "&location=" + location.latitude + "," + location.longitude +
                 "&radius=20000" +
                 "&key=" + apiKey;
-
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
-                        // Processing the API response and updating the map
                         mMap.clear();
                         JSONArray results = response.getJSONArray("results");
                         Log.d(TAG, "numero servizi: " + results.length());
@@ -201,7 +196,6 @@ public class SOSFragment extends Fragment implements
                             double lat = placeLocation.getDouble("lat");
                             double lng = placeLocation.getDouble("lng");
                             String name = place.getString("name");
-
                             LatLng latLng = new LatLng(lat, lng);
                             mMap.addMarker(new MarkerOptions().position(latLng).title(name)
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
@@ -213,7 +207,6 @@ public class SOSFragment extends Fragment implements
                     }
                 },
                 error -> {
-                    // Handling errors from the API request
                     Log.e(TAG, "API MAP: " + error.getMessage());
                     Toast.makeText(requireContext(), "Error making API request", Toast.LENGTH_SHORT).show();
                 });
@@ -225,7 +218,6 @@ public class SOSFragment extends Fragment implements
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        // Handling the result of the location permission request
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (GPSActivated()) {
@@ -237,7 +229,6 @@ public class SOSFragment extends Fragment implements
             }
         }
     }
-
     private void startLocationUpdate() {
         // Starting location updates using GPS_PROVIDER
         LocationManager locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
@@ -255,9 +246,9 @@ public class SOSFragment extends Fragment implements
 
     private void getCurrentLocation() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                    PackageManager.PERMISSION_GRANTED) {
                 if (GPSActivated()) {
-                    // Requesting location updates using FusedLocationProviderClient
                     LocationServices.getFusedLocationProviderClient(requireContext())
                             .requestLocationUpdates(locationRequest, new LocationCallback() {
                                 @Override
@@ -278,7 +269,6 @@ public class SOSFragment extends Fragment implements
                     turnOnGPS();
                 }
             } else {
-                // Request location permission if not granted
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
         }
@@ -321,13 +311,11 @@ public class SOSFragment extends Fragment implements
     }
 
     private boolean GPSActivated() {
-        // Checking if GPS is activated
         LocationManager locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
         return locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
     private void requestLocationPermission() {
-        // Requesting location permission
         int requestCode = 1;
         ActivityCompat.requestPermissions(
                 requireActivity(),
@@ -338,7 +326,6 @@ public class SOSFragment extends Fragment implements
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        // Handling location changes
         double latitude = location.getAltitude();
         double longitude = location.getLongitude();
         if (!received || !followMe) {

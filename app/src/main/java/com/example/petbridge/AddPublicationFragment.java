@@ -131,30 +131,22 @@ public class AddPublicationFragment extends Fragment {
 
         post.setOnClickListener(v -> {
             if (controlText(pubText.getText().toString())) {
-                // 1. Carica l'immagine su Firebase Storage
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference();
                 StorageReference imageReference = storageReference.child("pictures/" + selectedImageUri);
-
                 imageReference.putFile(selectedImageUri)
                         .addOnSuccessListener(taskSnapshot -> {
-                            // 2. Ottieni l'URL dell'immagine
                             imageReference.getDownloadUrl().addOnSuccessListener(uri -> {
                                 String imageUrl = uri.toString();
-
-                                // 3. Salva il documento Firestore con l'URL dell'immagine
                                 CollectionReference publicationsRef = db.collection("publications");
                                 String userId = auth.getCurrentUser().getUid();
                                 DocumentReference newPublicationRef = publicationsRef.document();
-
                                 Publication newPublication = new Publication(
                                         userId,
                                         imageUrl,
                                         pubText.getText().toString()
                                 );
-
                                 newPublicationRef.set(newPublication)
                                         .addOnSuccessListener(aVoid -> {
-                                            Toast.makeText(getActivity(), "Posting Success", Toast.LENGTH_SHORT).show();
                                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                                             fragmentManager.beginTransaction()
                                                     .replace(R.id.fragment_container, new HomeFragment())
@@ -162,15 +154,12 @@ public class AddPublicationFragment extends Fragment {
                                                     .commit();
                                         })
                                         .addOnFailureListener(e -> {
-                                            Toast.makeText(getActivity(), "Posting Failed", Toast.LENGTH_SHORT).show();
                                         });
                             });
                         })
                         .addOnFailureListener(e -> {
-                            Toast.makeText(getActivity(), "Image Upload Failed", Toast.LENGTH_SHORT).show();
                         });
             } else {
-                Toast.makeText(getActivity(), "Text Length must >30", Toast.LENGTH_SHORT).show();
             }
         });
         return view;
@@ -243,7 +232,8 @@ public class AddPublicationFragment extends Fragment {
 
     }
     public void checkCameraPermission(){
-        if(ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+        if(ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(requireActivity() , new String[]{
                     Manifest.permission.CAMERA},100);
         }else {

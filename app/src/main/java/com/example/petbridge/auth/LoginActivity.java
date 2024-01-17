@@ -59,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
            } else if (!validatePassword()) {
                Toast.makeText(this, "La password deve contenere almeno 8 caratteri", Toast.LENGTH_SHORT).show();
            } else {
-
                String email = binding.inEmail.getText().toString().trim();
                String password = binding.inPassword.getText().toString().trim();
                mAuth.signInWithEmailAndPassword(email, password)
@@ -67,13 +66,12 @@ public class LoginActivity extends AppCompatActivity {
                            @Override
                            public void onComplete(@NonNull Task<AuthResult> task) {
                                if (task.isSuccessful()) {
-                                   Log.d("Login Email and Password", "signInWithEmail:success");
+                                   Log.d("Login ", "success");
                                    FirebaseUser user = mAuth.getCurrentUser();
                                    Intent intent = new Intent(LoginActivity.this , MainActivity.class);
                                    startActivity(intent);
                                } else {
-
-                                   Log.w("Login Email and Password", "signInWithEmail:failure", task.getException());
+                                   Log.w("Login", "failure", task.getException());
                                    Toast.makeText(LoginActivity.this, "Wrong Email Or Password",
                                            Toast.LENGTH_LONG).show();
                                }

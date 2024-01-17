@@ -1,15 +1,8 @@
 package com.example.petbridge.navigation;
 import static com.example.petbridge.messaging.FCMNotification.sendNotification;
 import com.squareup.picasso.Picasso;
-
-import static java.security.AccessController.getContext;
-
 import android.app.AlertDialog;
 import android.content.Context;
-import android.net.Uri;
-
-
-
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -115,7 +107,6 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
             final EditText msg = new EditText(context);
             msg.setInputType(InputType.TYPE_CLASS_TEXT);
             builder.setView(msg);
-
             builder.setPositiveButton("Send", ((dialog, which) -> {
                 String userMsg = msg.getText().toString();
                 sendMessage(senderId, reciverId, userMsg);
@@ -131,8 +122,7 @@ public class PublicationAdapter extends RecyclerView.Adapter<PublicationAdapter.
 
         public void sendMessage(String senderId, String receiverId, String messageText) {
             FirebaseFirestore db = FirebaseManager.getFirestoreInstance();
-
-
+            //ID Generato e ordinato tramite un methodo per facilitare la gestione di messagistica
             String conversationId = generateConversationId(FirebaseAuth.getInstance().getUid(), receiverId);
             CollectionReference conversationsCollection = db.collection("Conversations");
             DocumentReference conversationDocument = conversationsCollection.document(conversationId);

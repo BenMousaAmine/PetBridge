@@ -94,9 +94,6 @@ public class RegisterFinallyActivity extends AppCompatActivity {
 
                                         })
                                         .show();
-
-
-
                             } else {
                                 Toast.makeText(this, "Error creating user", Toast.LENGTH_SHORT).show();
                             }
@@ -162,7 +159,8 @@ public class RegisterFinallyActivity extends AppCompatActivity {
         super.onResume();
         Log.d("RegisterFirstActivity", "onResume");
     }
-    private void saveUserDataToFirestore(FirebaseUser user, String name , String lastName , String birthDate,String email,String image) {
+    private void saveUserDataToFirestore(FirebaseUser user, String name , String lastName ,
+                                         String birthDate,String email,String image) {
         String userId = user.getUid();
         Map<String, Object> userData = new HashMap<>();
         userData.put("Name", name);

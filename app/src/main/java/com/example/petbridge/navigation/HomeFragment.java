@@ -89,7 +89,6 @@ public class HomeFragment extends Fragment {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         Publication publication = document.toObject(Publication.class);
                         String userId = publication.getUserId();
-
                         db.collection("Users")
                                 .document(userId)
                                 .addSnapshotListener((documentSnapshot, e1) -> {
@@ -109,14 +108,11 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
-
-
-
     private void updateView(List<Publication> publicationList , String reciverId) {
         String senderId = FirebaseAuth.getInstance().getUid();
         PublicationAdapter publicationAdapter = new PublicationAdapter(publicationList.toArray(new Publication[0]), senderId, reciverId);
         recyclerView.setAdapter(publicationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        publicationAdapter.notifyDataSetChanged();
     }
-
 }

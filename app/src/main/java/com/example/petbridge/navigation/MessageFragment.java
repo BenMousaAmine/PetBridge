@@ -29,12 +29,9 @@ import java.util.List;
 
 public class MessageFragment extends Fragment {
     private FirebaseFirestore db;
-  //  private FirebaseFirestore db1;
     private RecyclerView recyclerView;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-
     private String mParam1;
     private String mParam2;
 
@@ -68,14 +65,12 @@ public class MessageFragment extends Fragment {
         db = FirebaseManager.getFirestoreInstance();
         recyclerView = view.findViewById(R.id.mainUserRecyclerView);
         fetchData();
-
         return view ;
     }
 
     public void fetchData() {
         String currentUserId = FirebaseAuth.getInstance().getUid();
         List<Task<Void>> tasks = new ArrayList<>();
-
         db.collection("Conversations")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -89,7 +84,6 @@ public class MessageFragment extends Fragment {
                                 tasks.add(caricaUser(user1));
                             }
                         }
-
                         Tasks.whenAllSuccess(tasks).addOnSuccessListener(
                                 unused -> updateView(messageList, userIdList)
                         );
@@ -100,7 +94,6 @@ public class MessageFragment extends Fragment {
     public Task<Void> caricaUser(String userId) {
         TaskCompletionSource<Void> taskCompletionSource = new TaskCompletionSource<>();
         Message message = new Message();
-
         db.collection("Users")
                 .document(userId)
                 .get()

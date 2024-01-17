@@ -120,49 +120,6 @@ public class ConversationFragment extends Fragment {
                 });
     }
 
-/*
-    private void loadMessagesFromFirebase() {
-
-      //FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String converId = generateConversationId(senderId, receiverId);
-
-        db.collection("Conversations")
-                .document(converId)
-                .collection("messages")
-                .orderBy("timestamp", Query.Direction.ASCENDING)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // Pulisci la lista dei messaggi prima di aggiungerne di nuovi
-                        messageList.clear();
-
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Message message = document.toObject(Message.class);
-                            messageList.add(message);
-                        }
-
-                        // Aggiorna l'adapter con i nuovi dati
-                        conversationAdapter.notifyDataSetChanged();
-                    } else {
-                        // Gestisci l'errore
-                    }
-                });
-    }*/
-    /*
-    private void sendMessage (String messageText){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String converId = generateConversationId(senderId, receiverId);
-        CollectionReference conversationsCollection = db.collection("Conversations");
-        DocumentReference conversationDocument = conversationsCollection.document(converId);
-        CollectionReference messagesCollection = conversationDocument.collection("messages");
-        Message newMessage = new Message(senderId, receiverId, messageText, new Date());
-        conversationDocument.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult().exists()) {
-                addMessageToCollection(messagesCollection, newMessage);
-                loadMessagesFromFirebase();
-            }
-        });
-    }*/
 
     private void sendMessage(String messageText) {
         String converId = generateConversationId(senderId, receiverId);
@@ -170,10 +127,8 @@ public class ConversationFragment extends Fragment {
         DocumentReference conversationDocument = conversationsCollection.document(converId);
         CollectionReference messagesCollection = conversationDocument.collection("messages");
         Message newMessage = new Message(senderId, receiverId, messageText, new Date());
-
         messageList.add(newMessage);
         conversationAdapter.notifyItemInserted(messageList.size() - 1);
-
         addMessageToCollection(messagesCollection, newMessage);
     }
 

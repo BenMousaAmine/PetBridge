@@ -32,11 +32,13 @@ public class RunActivity extends AppCompatActivity {
         }
         login = findViewById(R.id.loginMain);
         register = findViewById(R.id.registerMain);
+
+
+
         login.setOnClickListener(v ->{
             Intent intent = new Intent(this , LoginActivity.class);
             startActivity(intent);
         });
-
         register.setOnClickListener(v -> {
             Intent intent = new Intent(this , RegisterFirstActivity.class);
             startActivity(intent);
